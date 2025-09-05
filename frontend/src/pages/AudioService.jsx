@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export default function LinkService() {
-  const [url, setUrl] = useState("");
+export default function AudioService() {
+  const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -9,8 +9,8 @@ export default function LinkService() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!url.trim()) {
-      setError("Please enter a valid URL.");
+    if (!file) {
+      setError("Please upload an audio file first.");
       return;
     }
 
@@ -18,16 +18,19 @@ export default function LinkService() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/submit-url", {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("http://localhost:8000/api/submit-audio", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        credentials: "include",
+        body: formData,
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Failed to analyze link");
+        throw new Error(data.message || "Failed to process audio");
       }
 
       setResult(data.result);
@@ -40,21 +43,20 @@ export default function LinkService() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Link Analysis</h1>
+      <h1 className="text-2xl font-bold mb-4">Audio Scanning</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter URL..."
+          type="file"
+          accept="audio/*"
+          onChange={(e) => setFile(e.target.files[0])}
           className="border p-2 w-full"
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
         >
-          {loading ? "Analyzing..." : "Analyze"}
+          {loading ? "Processing..." : "Scan Audio"}
         </button>
       </form>
 

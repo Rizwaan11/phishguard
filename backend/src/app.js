@@ -1,29 +1,31 @@
-
 import { User } from "./models/userModel.js";
-
+import uploadRoutes from "./uploadRoutes.js";
 
 import express from "express";
 import session from "express-session";
 import bcrypt from "bcryptjs";
 import cors from "cors";
 
-
-
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:5173", // or your frontend URL
-  credentials: true
-}));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true })); // for form requests
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or your frontend URL
+    credentials: true,
+  })
+);
 
-
-  app.use(session({
-  secret: "your_secret_key",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false } // set to true in HTTPS
-}));
+app.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // set to true in HTTPS
+  })
+);
 
 // Signup
 app.post("/signup", async (req, res) => {
@@ -62,7 +64,6 @@ app.post("/signin", async (req, res) => {
 
     req.session.userId = user._id;
     req.session.email = user.email;
-    
 
     res.json({ message: "Login successful", email: user.email });
   } catch (error) {
@@ -81,7 +82,6 @@ app.post("/logout", (req, res) => {
   });
 });
 
-
 // Check if logged in
 app.get("/check-auth", (req, res) => {
   if (req.session.userId) {
@@ -91,6 +91,6 @@ app.get("/check-auth", (req, res) => {
   }
 });
 
+app.use("/api", uploadRoutes);
 
-
-export {app}
+export { app };

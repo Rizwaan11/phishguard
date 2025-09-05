@@ -6,7 +6,7 @@ import Signup from "./pages/Signup";
 import TextService from "./pages/TextService";
 import LinkService from "./pages/LinkService";
 import QrService from "./pages/QrService";
-import PdfService from "./pages/PdfService";
+import PdfService from "./pages/AudioService";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -60,15 +60,13 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route
           path="/login"
-          element={
-            <Login setIsLoggedIn={setIsLoggedIn} setEmail={setEmail} />
-          }
+          element={<Login setIsLoggedIn={setIsLoggedIn} setEmail={setEmail} />}
         />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/text" element={<TextService />} />
-        <Route path="/link" element={<LinkService />} />
-        <Route path="/qr" element={<QrService />} />
-        <Route path="/pdf" element={<PdfService />} />
+        <Route path="/text-upload" element={<TextService />} />
+        <Route path="/url-upload" element={<LinkService />} />
+        <Route path="/qrcode-upload" element={<QrService />} />
+        <Route path="/audio-upload" element={<PdfService />} />
       </Routes>
     </Router>
   );

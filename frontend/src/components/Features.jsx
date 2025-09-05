@@ -5,22 +5,22 @@ export default function Features() {
     {
       title: "Text Analysis",
       desc: "Upload or paste text for AI analysis.",
-      link: "/text",
+      link: "/text-upload", // will send to /api/submit-text
     },
     {
       title: "URL Analysis",
       desc: "Analyze any URL for content or security risks.",
-      link: "/link",
+      link: "/url-upload", // will send to /api/submit-url
     },
     {
       title: "QR Code Analysis",
       desc: "Upload a QR code image to extract its data.",
-      link: "/qr",
+      link: "/qrcode-upload", // will send to /api/submit-qrcode (protected)
     },
     {
       title: "Audio Scanning",
       desc: "Upload audio files for content extraction and analysis.",
-      link: "/pdf",
+      link: "/audio-upload", // will send to /api/submit-audio (protected)
     },
   ];
 
